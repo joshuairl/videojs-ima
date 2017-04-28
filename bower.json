@@ -7,7 +7,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "video.js": "~5.3",
-    "videojs-contrib-ads": "~3.1.2"
+    "videojs-contrib-ads": "~4.2.6"
   },
   "repository": {
     "type": "git",

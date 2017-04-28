@@ -453,7 +453,7 @@
           this.player.src(this.contentSource);
         }
         for (var index in this.contentAndAdsEndedListeners) {
-          this.contentAndAdsEndedListeners[index]();
+          // this.contentAndAdsEndedListeners[index]();
         }
       }
     }.bind(this);
@@ -919,6 +919,7 @@
      * @param {function} listener The listener to be called when content completes.
      */
     this.addContentEndedListener = function(listener) {
+      console.log("added content ended listener");
       this.contentEndedListeners.push(listener);
     }.bind(this);
 
@@ -928,6 +929,7 @@
      * @param {function} listener The listener to be called when content and ads complete.
      */
     this.addContentAndAdsEndedListener = function(listener) {
+      console.log("added addContentAndAdsEndedListener");
       this.contentAndAdsEndedListeners.push(listener);
     }.bind(this);
 
