@@ -1297,11 +1297,11 @@
         this.contentComplete = true;
       }
       for (var index in this.contentEndedListeners) {
-        this.contentEndedListeners[index]();
+        // this.contentEndedListeners[index]();
       }
       if (this.allAdsCompleted) {
         for (var index in this.contentAndAdsEndedListeners) {
-          this.contentAndAdsEndedListeners[index]();
+          // this.contentAndAdsEndedListeners[index]();
         }
       }
       clearInterval(this.updateTimeIntervalHandle);
@@ -1440,4 +1440,3 @@
 
   videojs.plugin('ima', init);
 });
-
