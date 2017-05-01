@@ -449,9 +449,9 @@
       this.allAdsCompleted = true;
       this.adContainerDiv.style.display = 'none';
       if (this.contentComplete == true) {
-        if (this.contentPlayer.src != this.contentSource) {
-          this.player.src(this.contentSource);
-        }
+        // if (this.contentPlayer.src != this.contentSource) {
+        //   this.player.src(this.contentSource);
+        // }
         for (var index in this.contentAndAdsEndedListeners) {
           // this.contentAndAdsEndedListeners[index]();
         }
@@ -852,7 +852,7 @@
      *     Leave blank to use the existing ad tag.
      * @param {?boolean} playOnLoad True to play the content once it has loaded,
      *     false to only load the content but not start playback.
-     */
+    */
     this.setContentWithAdTag = function(contentSrc, adTag, playOnLoad) {
       resetIMA_();
       this.settings.adTagUrl = adTag ? adTag : this.settings.adTagUrl;
@@ -1294,16 +1294,21 @@
      * Local content ended listener for contentComplete.
      */
     this.localContentEndedListener = function() {
+      console.log("localContentEndedListener Called!");
       if (this.adsLoader && !this.contentComplete) {
         this.adsLoader.contentComplete();
         this.contentComplete = true;
       }
       for (var index in this.contentEndedListeners) {
-        // this.contentEndedListeners[index]();
+        // if (this.contentEndedListeners[index]) {
+        //   this.contentEndedListeners[index]();
+        // }
       }
       if (this.allAdsCompleted) {
         for (var index in this.contentAndAdsEndedListeners) {
-          // this.contentAndAdsEndedListeners[index]();
+          // if (this.contentAndAdsEndedListeners[index]) {
+          //   this.contentAndAdsEndedListeners[index]();
+          // }
         }
       }
       clearInterval(this.updateTimeIntervalHandle);
@@ -1315,6 +1320,7 @@
     }.bind(this);
 
     this.playerDisposedListener = function(){
+      console.log("playerDisposedListener Called!");
       this.contentEndedListeners, this.contentAndAdsEndedListeners = [], [];
       this.contentComplete = true;
       this.player.off('ended', this.localContentEndedListener);
