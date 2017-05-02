@@ -448,10 +448,19 @@
     var onAllAdsCompleted_ = function(adEvent) {
       this.allAdsCompleted = true;
       this.adContainerDiv.style.display = 'none';
+
+      console.log("onAllAdsCompleted!");
       if (this.contentComplete == true) {
+        console.log("Content is also complete!");
         // if (this.contentPlayer.src != this.contentSource) {
         //   this.player.src(this.contentSource);
         // }
+        console.log("contentPlayer:",this.contentPlayer);
+        if (this.player.playlist) {
+          console.log("Has playlist, Resetting IMA");
+          //has playlist plugin.
+          this.setContentWithAdTagPlaylistNext();
+        }
         for (var index in this.contentAndAdsEndedListeners) {
           // this.contentAndAdsEndedListeners[index]();
         }
@@ -859,6 +868,30 @@
       changeSource_(contentSrc, playOnLoad);
     }.bind(this);
 
+    /**
+     * RESETS THE AD CONTAINER SO I DON'T LOSE MY MIND.
+     * @param {?string} contentSrc The URI for the content to be played. Leave
+     *     blank to use the existing content.
+     * @param {?string} adTag The ad tag to be requested when the content loads.
+     *     Leave blank to use the existing ad tag.
+     * @param {?boolean} playOnLoad True to play the content once it has loaded,
+     *     false to only load the content but not start playback.
+    */
+    this.setContentWithAdTagPlaylistNext = function(adTag, playOnLoad) {
+      resetIMA_();
+      this.settings.adTagUrl = adTag ? adTag : this.settings.adTagUrl;
+      // changeSource_(contentSrc, playOnLoad);
+      // if (!!this.player.currentSrc()) {
+      //   this.player.currentTime(0);
+      //   this.player.pause();
+      // }
+      // this.player.playlist.next();
+      if (playOnLoad) {
+        this.player.on('loadedmetadata', playContentFromZero_);
+      } else {
+        this.player.on('loadedmetadata', seekContentToZero_);
+      }
+    }.bind(this);
     /**
      * Sets the content of the video player. You should use this method instead
      * of setting the content src directly to ensure the proper ads response is
@@ -1298,17 +1331,25 @@
       if (this.adsLoader && !this.contentComplete) {
         this.adsLoader.contentComplete();
         this.contentComplete = true;
+        console.log("Notified content complete");
+
       }
+      console.log("contentEndedListeners:",this.contentEndedListeners);
       for (var index in this.contentEndedListeners) {
         // if (this.contentEndedListeners[index]) {
-        //   this.contentEndedListeners[index]();
+          // this.contentEndedListeners[index]();
         // }
       }
       if (this.allAdsCompleted) {
-        for (var index in this.contentAndAdsEndedListeners) {
-          // if (this.contentAndAdsEndedListeners[index]) {
-          //   this.contentAndAdsEndedListeners[index]();
-          // }
+        console.log("contentAndAdsEndedListeners:",this.contentAndAdsEndedListeners);
+        // for (var index in this.contentAndAdsEndedListeners) {
+            // this.contentAndAdsEndedListeners[index]();
+        //   }
+        // }
+        if (this.player.playlist) {
+          console.log("Has playlist, Resetting IMA");
+          //has playlist plugin.
+          this.setContentWithAdTagPlaylistNext();
         }
       }
       clearInterval(this.updateTimeIntervalHandle);
