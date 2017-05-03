@@ -881,10 +881,10 @@
       resetIMA_();
       this.settings.adTagUrl = adTag ? adTag : this.settings.adTagUrl;
       // changeSource_(contentSrc, playOnLoad);
-      // if (!!this.player.currentSrc()) {
-      //   this.player.currentTime(0);
-      //   this.player.pause();
-      // }
+      if (!!this.player.currentSrc()) {
+        this.player.currentTime(0);
+        this.player.pause();
+      }
       // this.player.playlist.next();
       if (playOnLoad) {
         this.player.on('loadedmetadata', playContentFromZero_);
