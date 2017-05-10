@@ -456,11 +456,11 @@
         //   this.player.src(this.contentSource);
         // }
         console.log("contentPlayer:",this.contentPlayer);
-        if (this.player.playlist) {
-          console.log("Has playlist, Resetting IMA");
-          //has playlist plugin.
-          this.setContentWithAdTagPlaylistNext();
-        }
+        // if (this.player.playlist) {
+        //   console.log("Has playlist, Resetting IMA");
+        //   //has playlist plugin.
+        //   this.set();
+        // }
         for (var index in this.contentAndAdsEndedListeners) {
           // this.contentAndAdsEndedListeners[index]();
         }
@@ -1445,7 +1445,9 @@
 
     createAdContainer_();
     this.adsLoader = new google.ima.AdsLoader(this.adDisplayContainer);
-
+    if (this.settings['disableFlash']) {
+      this.adsLoader.getSettings().setDisableFlashAds(true);
+    }
     this.adsLoader.getSettings().setVpaidMode(
         google.ima.ImaSdkSettings.VpaidMode.ENABLED);
     if (this.settings.vpaidAllowed == false) {
